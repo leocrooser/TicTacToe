@@ -50,7 +50,7 @@ for (var i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', handleClick)
 }
 
-function checkWlsinner(playerSelections) {
+function checkWinner(playerSelections) {
 
     for (var i = 0; i < winningCombinations.length; i++) {
         var matches = 0;
