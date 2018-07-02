@@ -1,8 +1,8 @@
-var currentplayer = "X";
+var currentPlayer = "X";
 var nextplayer = "O";
 
-var playerXSelections = NewArray()
-var playerOSelections = NewArray()
+var playerXSelections = new Array();
+var playerOSelections = new Array();
 
 const winningCombinations = [
     [1, 2, 3],
@@ -13,14 +13,68 @@ const winningCombinations = [
     [3, 6, 9],
     [1, 5, 9],
     [3, 5, 7]
-  ]
-  handleClick = function(event) {
-    var cell = event.target
-    console.log(cell.id);
+]
+
+handleClick = function(event) {
+    var cell = event.target;
+  
+    cell.innerHTML = currentPlayer;
+  
+    if(currentPlayer === "X" ) {
+      playerSelections = playerXSelections;
+      nextPlayer = "O";
+    } else {
+      playerSelections = playerOSelections;
+      nextPlayer = "X";
+    }
+  
+    playerSelections.push(parseInt(cell.id));
+  
+    if(checkWinner(playerSelections)) {
+      alert("Player " + currentPlayer + " wins!")
+      resetGame();
+    }
+  
+    if(checkDraw()) {
+      alert("Draw!");
+      resetGame();
+    }
+  
+    // Swap players
+    currentPlayer = nextPlayer;
   }
-  
-  var cells = document.querySelectorAll("td");
-  
-  for(var i = 0; i < cells.length; i++) {
+
+var cells = document.querySelectorAll("td");
+
+for (var i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', handleClick)
-  }
+}
+
+function checkWlsinner(playerSelections) {
+
+    for (var i = 0; i < winningCombinations.length; i++) {
+        var matches = 0;
+        for (var j = 0; j < winningCombinations[i].length; j++) {
+            if (playerSelections.includes(winningCombinations[i][j])) {
+                matches++
+            } else break;
+
+            if (matches == 3)
+                return true
+        }
+    }
+
+    return false
+}
+
+function checkDraw() {
+    return playerOSelections.length + playerXSelections.length >= cells.length
+}
+
+function resetGame() {
+    playerXSelections = new Array();
+    playerOSelections = new Array();
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].innerHTML = ""
+    }
+}
